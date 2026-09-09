@@ -17,7 +17,9 @@ Output: build/libs/guidebookfixes-<version>.jar
 """
 
 import glob
+import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -83,6 +85,41 @@ def classpath():
     return cp
 
 
+# Forge rejects anything else outright: mod construction throws
+# "Invalid displayTest value supplied in mods.toml", which takes the whole
+# client down at load with a stack trace pointing at whichever mod happens to
+# report the failure. Not something to discover by launching the game.
+DISPLAY_TEST = {"MATCH_VERSION", "IGNORE_SERVER_VERSION", "IGNORE_ALL_VERSION", "NONE"}
+
+
+def check_metadata():
+    """Everything the game would only tell us about by crashing."""
+    problems = []
+
+    toml = open(os.path.join(RES, "META-INF", "mods.toml"), encoding="utf-8").read()
+    m = re.search(r'^\s*displayTest\s*=\s*"([^"]*)"', toml, re.M)
+    if m and m.group(1) not in DISPLAY_TEST:
+        problems.append(f'mods.toml 的 displayTest="{m.group(1)}" 不是合法值，'
+                        f'只能是 {"／".join(sorted(DISPLAY_TEST))}')
+
+    cfg_name = "guidebookfixes.mixins.json"
+    cfg = json.load(open(os.path.join(RES, cfg_name), encoding="utf-8"))
+    pkg = cfg["package"]
+    for section in ("mixins", "client", "server"):
+        for name in cfg.get(section, []):
+            path = os.path.join(CLASSES, *(pkg + "." + name).split(".")) + ".class"
+            if not os.path.exists(path):
+                problems.append(f"{cfg_name} 列了 {section}.{name}，但編譯結果裡沒有這個類別")
+
+    plugin = cfg.get("plugin")
+    if plugin:
+        path = os.path.join(CLASSES, *plugin.split(".")) + ".class"
+        if not os.path.exists(path):
+            problems.append(f"{cfg_name} 的 plugin {plugin} 不存在")
+
+    return problems
+
+
 def main():
     javac = os.path.join(JDK, "bin", "javac.exe" if os.name == "nt" else "javac")
     jar = os.path.join(JDK, "bin", "jar.exe" if os.name == "nt" else "jar")
@@ -114,6 +151,10 @@ def main():
         print(r.stderr.strip())
 
     shutil.copytree(RES, CLASSES, dirs_exist_ok=True)
+
+    problems = check_metadata()
+    if problems:
+        die("中繼資料檢查未過：\n  " + "\n  ".join(problems))
 
     manifest = os.path.join(OUT, "MANIFEST.MF")
     with open(manifest, "w", encoding="utf-8", newline="\r\n") as fh:
