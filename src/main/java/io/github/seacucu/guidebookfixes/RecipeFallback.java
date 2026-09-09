@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -113,6 +115,43 @@ public final class RecipeFallback {
         Item item = BuiltInRegistries.f_257033_.m_7745_(id);           // ITEM.get
         Recipe<?> found = producing(item, null, type);
         return found;
+    }
+
+    /**
+     * Which kinds of recipe currently produce this item, as registry ids.
+     *
+     * <p>A guidebook that reports "no recipe" may simply have no renderer for
+     * the kind of recipe involved: GuideME draws crafting, smelting, smithing
+     * and cooking, so an item a modpack moved to a Create crusher or a Thermal
+     * pulverizer looks missing to it while being perfectly craftable. Telling
+     * those two situations apart is the difference between a true statement and
+     * a false one, so the caller needs to know.
+     *
+     * @return the distinct recipe type ids, empty if nothing produces the item
+     */
+    public static List<String> recipeTypesProducing(ResourceLocation itemId) {
+        if (itemId == null || !BuiltInRegistries.f_257033_.m_7804_(itemId)) {   // ITEM.containsKey
+            return List.of();
+        }
+        Item item = BuiltInRegistries.f_257033_.m_7745_(itemId);               // ITEM.get
+        Minecraft mc = Minecraft.m_91087_();                                    // getInstance
+        Level level = mc == null ? null : mc.f_91073_;                          // Minecraft.level
+        if (level == null) {
+            return List.of();
+        }
+        SortedSet<String> types = new TreeSet<>();
+        for (Recipe<?> recipe : level.m_7465_().m_44051_()) {                   // getRecipes
+            try {
+                ItemStack out = recipe.m_8043_(level.m_9598_());                // getResultItem
+                if (out != null && out.m_41720_() == item) {                    // getItem
+                    ResourceLocation key = BuiltInRegistries.f_256990_.m_7981_(recipe.m_6671_());
+                    types.add(key == null ? recipe.m_6671_().toString() : key.toString());
+                }
+            } catch (Throwable ignored) {
+                // see producing()
+            }
+        }
+        return new ArrayList<>(types);
     }
 
     /**

@@ -1,6 +1,8 @@
 {
   "guidebookfixes.recipe_removed": "本模組包已移除此配方。",
-  "guidebookfixes.recipe_removed.id": "本模組包已移除此配方（%s）。",
+  "guidebookfixes.recipe_removed.id": "本模組包沒有留下製作方式（%s）。",
   "guidebookfixes.guide.not_in_game": "進入遊戲後才能顯示配方。",
-  "guidebookfixes.guide.no_renderer": "本手冊無法顯示這種配方（%s）。"
+  "guidebookfixes.guide.no_renderer": "本手冊無法顯示這種配方（%s）。",
+  "guidebookfixes.guide.not_drawable": "本手冊畫不出這條配方（%s），請用 JEI 之類的配方檢視器查詢。",
+  "guidebookfixes.guide.recipe_missing": "本模組包已無配方 %s。"
 }
