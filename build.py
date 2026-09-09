@@ -57,6 +57,7 @@ NEEDED = [
     # DataFixerUpper on the classpath to resolve the supertype. 6.x is the line
     # Minecraft 1.20.1 ships; the launcher keeps several versions side by side.
     "com/mojang/datafixerupper/6.*/datafixerupper-*.jar",
+    "org/apache/logging/log4j/log4j-api/*/log4j-api-*.jar",
 ]
 # Mods whose classes our Mixins reference. Optional: a missing one only means
 # the Mixins for that mod cannot be compiled, which we report rather than hide.

@@ -39,23 +39,12 @@ Every fix only activates when the mod that owns the book is installed.
     ordering = "NONE"
     side = "CLIENT"
 
-[[dependencies.guidebookfixes]]
-    modId = "eidolon"
-    mandatory = false
-    versionRange = "[0.3,)"
-    ordering = "AFTER"
-    side = "CLIENT"
-
-[[dependencies.guidebookfixes]]
-    modId = "patchouli"
-    mandatory = false
-    versionRange = "[84,)"
-    ordering = "AFTER"
-    side = "CLIENT"
-
-[[dependencies.guidebookfixes]]
-    modId = "guideme"
-    mandatory = false
-    versionRange = "[20.1,)"
-    ordering = "AFTER"
-    side = "CLIENT"
+# The mods this one patches are deliberately NOT listed as dependencies. Such
+# an entry would only do two things: order mod construction (Mixins are applied
+# long before that, so it buys nothing) and gate on a version range. The gate
+# costs real failures: a mod whose version string is not plain Maven refuses to
+# match any range and takes the whole game down at load. Patchouli reports
+# "1.20.1-84.1-FORGE", which matches neither [84,) nor anything else sane.
+#
+# Whether a mod is installed is what actually matters, and MixinPlugin answers
+# that without caring about version strings.

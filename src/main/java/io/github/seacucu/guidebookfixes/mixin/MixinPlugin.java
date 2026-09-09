@@ -1,5 +1,7 @@
 package io.github.seacucu.guidebookfixes.mixin;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -16,6 +18,7 @@ import java.util.Set;
  * never turn a missing optional dependency into a crash or an error log.
  */
 public class MixinPlugin implements IMixinConfigPlugin {
+    private static final Logger LOG = LogManager.getLogger("guidebookfixes");
     private static final String PACKAGE = "io.github.seacucu.guidebookfixes.mixin.";
 
     @Override
@@ -69,7 +72,14 @@ public class MixinPlugin implements IMixinConfigPlugin {
     public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
     }
 
+    /**
+     * Injectors are configured not to fail the game when an injection point has
+     * moved, because a cosmetic fix is never worth a crash. The cost is that a
+     * fix can quietly stop working after a mod update, so say plainly which
+     * ones were applied; that line is the only way to tell from a log.
+     */
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+        LOG.info("applied {} to {}", mixinClassName.substring(PACKAGE.length()), targetClassName);
     }
 }
