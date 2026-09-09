@@ -1,0 +1,4 @@
+# Java 專案照一般慣例存 LF，避免跨平台 checkout 產生假變更。
+* text=auto eol=lf
+*.png binary
+*.jar binary
