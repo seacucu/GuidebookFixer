@@ -6,7 +6,8 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "guidebookfixes.refmap.json",
   "client": [
-    "eidolon.PageMixin"
+    "eidolon.PageMixin",
+    "eidolon.RecipePageMixin"
   ],
   "injectors": {
     "defaultRequire": 1
