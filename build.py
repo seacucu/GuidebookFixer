@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Build guidebookfixer-<version>.jar with plain javac — no Gradle, no downloads.
+"""Build guidebookfixer-<version>.jar with plain javac: no Gradle, no downloads.
 
 Why not ForgeGradle: this mod is a handful of Mixins that patch other mods.
 Compiling against the SRG-named Minecraft jar that the launcher already has on
 disk gives us exactly the shape Forge runs in production, which means no refmap
-and no remapping step — what we write is what runs. The cost is that vanilla
+and no remapping step, so what we write is what runs. The cost is that vanilla
 members appear under their SRG names (`m_92895_` rather than `Font.width`);
 every such call carries a comment naming the real member.
 

@@ -14,7 +14,7 @@ import java.util.Set;
  *
  * <p>Every Mixin lives in a sub-package named after the mod it targets, so the
  * guard is a package-name lookup rather than a list that can drift out of date.
- * If the owning mod is absent the Mixin is skipped silently — this mod must
+ * If the owning mod is absent the Mixin is skipped silently. This mod must
  * never turn a missing optional dependency into a crash or an error log.
  */
 public class MixinPlugin implements IMixinConfigPlugin {

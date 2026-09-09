@@ -16,7 +16,7 @@ both live in the book's own rendering code.
 whole Chinese, Japanese or Korean paragraph as one unbreakable word. The
 paragraph is drawn as a single line several times wider than the page and runs
 off the edge. This mod hands the layout to Minecraft's own line breaker, which
-already handles CJK — that is why vanilla books and tooltips are fine.
+already handles CJK. That is why vanilla books and tooltips are fine.
 
 **Recipe pages pointing at recipes the pack changed.** A page that asks for
 recipe id `examplemod:widget` fails when the pack removed that recipe and added
@@ -51,9 +51,9 @@ what the book looks up and what it draws.
 
 | Mod | Line breaking | Recipe fallback | Draws unsupported recipe kinds | Message in the player's language |
 |---|---|---|---|---|
-| Eidolon: Repraised | ✅ | ✅ by result item | — | ✅ |
-| Patchouli | — | ✅ by recipe id | — | — (renders blank, nothing to translate) |
-| GuideME (the AE2 guide) | — | ✅ by recipe id | ✅ | ✅ |
+| Eidolon: Repraised | yes | by result item | n/a | yes |
+| Patchouli | n/a | by recipe id | n/a | n/a, it renders blank with nothing to translate |
+| GuideME (the AE2 guide) | n/a | by recipe id | yes | yes |
 
 Only GuideME gets the generic recipe drawing: it has a recipe box that takes
 any ingredients and result. Patchouli and Eidolon pages are written as one
@@ -70,7 +70,7 @@ entirely when that mod is not installed. Adding a book means adding a package.
 
 No Gradle and no downloads. The build compiles against the SRG-named Minecraft
 jar the launcher already has on disk, which is the exact shape Forge runs in
-production — so there is no refmap and no remapping step, and what is written
+production, so there is no refmap and no remapping step, and what is written
 is what runs. The trade-off is that vanilla members appear under SRG names
 (`m_92895_` rather than `Font.width`); every such call names the real member in
 a comment.

@@ -25,8 +25,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>Guidebooks hardcode recipe ids. A modpack that removes a recipe and adds
  * its own replacement gives that replacement a fresh id, so the lookup fails
  * and the page has nothing to draw. The item the page is about is still right,
- * though, so we ask the far more durable question — what currently produces
- * this item? — and hand back that recipe. The page then shows what the player
+ * though, so we ask the far more durable question, what currently produces
+ * this item, and hand back that recipe. The page then shows what the player
  * can actually craft.
  *
  * <p>Nothing here touches the recipe registry. It is a read-only lookup.

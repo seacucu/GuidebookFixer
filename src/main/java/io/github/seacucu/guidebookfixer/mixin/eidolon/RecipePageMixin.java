@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Eidolon's codex looks recipes up by a hardcoded id. When a modpack removes
  * the recipe and adds its own under a different id, the page prints
- * {@code "No matching recipe found for eidolon:worktable"} over the page — an
+ * {@code "No matching recipe found for eidolon:worktable"} over the page: an
  * untranslated string, and an id that means nothing to a player.
  *
  * <p>Two changes, both confined to what the page displays:

@@ -13,8 +13,8 @@ import java.util.List;
  * <p>Several mods roll their own word wrapping as {@code text.split(" ")}, which
  * treats a whole Chinese/Japanese/Korean paragraph as one unbreakable word: the
  * paragraph is drawn as a single line that runs off the page. Minecraft's own
- * {@code StringSplitter} already breaks CJK correctly — that is why vanilla
- * books and tooltips are fine — so we simply hand the work to it.
+ * {@code StringSplitter} already breaks CJK correctly, which is why vanilla
+ * books and tooltips are fine, so we simply hand the work to it.
  *
  * <p>NOTE ON NAMES: this mod is compiled against the SRG-named Minecraft jar,
  * which is the shape Forge actually runs in production. Vanilla members
