@@ -9,22 +9,12 @@ version = "${file.jarVersion}"
 displayName = "Guidebook Fixer"
 authors = "seacucu"
 logoFile = "logo.png"
+displayURL = "https://github.com/seacucu/GuidebookFixer"
 # Purely cosmetic, client-side, and safe to have on only one side of a connection.
 # Forge accepts MATCH_VERSION / IGNORE_SERVER_VERSION / IGNORE_ALL_VERSION / NONE;
 # anything else fails mod construction outright with "Invalid displayTest value".
 displayTest = "IGNORE_ALL_VERSION"
-description = '''
-Repairs in-game guidebooks that break inside modpacks.
-
-- Line breaking for Chinese, Japanese and Korean in books that wrap text by
-  splitting on spaces, which leaves CJK paragraphs running off the page.
-- Recipe pages that reference a recipe id the modpack removed or replaced:
-  the page falls back to whatever recipe currently produces the item, and says
-  so plainly when the modpack removed it outright, instead of printing an
-  untranslated error string.
-
-Every fix only activates when the mod that owns the book is installed.
-'''
+description = '''Repairs in-game guidebooks that break inside modpacks.'''
 
 [[dependencies.guidebookfixer]]
     modId = "forge"
