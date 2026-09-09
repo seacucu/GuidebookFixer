@@ -26,7 +26,7 @@ import sys
 import zipfile
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 MC = "1.20.1"
 
 APPDATA = os.environ.get("APPDATA", "")
@@ -53,10 +53,16 @@ NEEDED = [
     "org/spongepowered/mixin/*/mixin-*.jar",
     "org/ow2/asm/asm-tree/*/asm-tree-*.jar",
     "org/ow2/asm/asm/*/asm-*.jar",
+    # Registry implements com.mojang.serialization.Keyable, so javac needs
+    # DataFixerUpper on the classpath to resolve the supertype. 6.x is the line
+    # Minecraft 1.20.1 ships; the launcher keeps several versions side by side.
+    "com/mojang/datafixerupper/6.*/datafixerupper-*.jar",
 ]
 # Mods whose classes our Mixins reference. Optional: a missing one only means
 # the Mixins for that mod cannot be compiled, which we report rather than hide.
-MOD_JARS = {"eidolon": "eidolon_repraised-*.jar"}
+MOD_JARS = {"eidolon": "eidolon_repraised-*.jar",
+            "guideme": "guideme-*.jar",
+            "patchouli": "Patchouli-*.jar"}
 
 
 def die(msg):
@@ -163,7 +169,6 @@ def write_jar(out_path, manifest):
 
 def main():
     javac = os.path.join(JDK, "bin", "javac.exe" if os.name == "nt" else "javac")
-    jar = os.path.join(JDK, "bin", "jar.exe" if os.name == "nt" else "jar")
     if not os.path.exists(javac):
         die(f"找不到 javac：{javac}（設 GBF_JDK）")
 

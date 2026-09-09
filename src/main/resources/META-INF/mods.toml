@@ -45,3 +45,17 @@ Every fix only activates when the mod that owns the book is installed.
     versionRange = "[0.3,)"
     ordering = "AFTER"
     side = "CLIENT"
+
+[[dependencies.guidebookfixes]]
+    modId = "patchouli"
+    mandatory = false
+    versionRange = "[84,)"
+    ordering = "AFTER"
+    side = "CLIENT"
+
+[[dependencies.guidebookfixes]]
+    modId = "guideme"
+    mandatory = false
+    versionRange = "[20.1,)"
+    ordering = "AFTER"
+    side = "CLIENT"

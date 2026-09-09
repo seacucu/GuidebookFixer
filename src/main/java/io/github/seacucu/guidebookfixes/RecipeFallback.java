@@ -1,8 +1,12 @@
 package io.github.seacucu.guidebookfixes;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 import java.lang.reflect.Method;
@@ -79,21 +83,59 @@ public final class RecipeFallback {
         if (page == null || result == null || result.m_41619_()) {   // ItemStack.isEmpty
             return null;
         }
-        Minecraft mc = Minecraft.m_91087_();                          // getInstance
-        Level level = mc == null ? null : mc.f_91073_;                // Minecraft.level
-        if (level == null) {
+        return producing(result.m_41720_(), expectedRecipeClass(page.getClass()), null);
+    }
+
+    /**
+     * Guidebooks that only carry a recipe id, with no item alongside it, would
+     * otherwise be unfixable. Most mods name a recipe after what it makes
+     * ({@code eidolon:worktable}, {@code botania:diluted_pool}), so when the id
+     * also names an item we can recover the intent. Ids that are not item ids
+     * ({@code ae2:transform/fluix_crystals}) get no fallback, which is the
+     * honest answer rather than a guess.
+     */
+    public static Recipe<?> byRecipeId(ResourceLocation id) {
+        if (id == null || !BuiltInRegistries.f_257033_.m_7804_(id)) {  // ITEM.containsKey
             return null;
         }
-        Class<?> expected = expectedRecipeClass(page.getClass());
+        return producing(BuiltInRegistries.f_257033_.m_7745_(id), null, null);   // ITEM.get
+    }
 
+    /**
+     * Same idea as {@link #byRecipeId}, but the caller knows exactly which
+     * recipe type the page renders, which is a tighter filter than any guess we
+     * could make from the page class.
+     */
+    public static Recipe<?> byRecipeId(ResourceLocation id, RecipeType<?> type) {
+        if (id == null || !BuiltInRegistries.f_257033_.m_7804_(id)) {  // ITEM.containsKey
+            return null;
+        }
+        Item item = BuiltInRegistries.f_257033_.m_7745_(id);           // ITEM.get
+        Recipe<?> found = producing(item, null, type);
+        return found;
+    }
+
+    /**
+     * @param expected restrict to recipes of this class, or null for any kind
+     * @param type     restrict to this recipe type, or null for any
+     */
+    private static Recipe<?> producing(Item item, Class<?> expected, RecipeType<?> type) {
+        Minecraft mc = Minecraft.m_91087_();                          // getInstance
+        Level level = mc == null ? null : mc.f_91073_;                // Minecraft.level
+        if (level == null || item == null) {
+            return null;
+        }
         List<Recipe<?>> candidates = new ArrayList<>();
         for (Recipe<?> recipe : level.m_7465_().m_44051_()) {         // getRecipeManager().getRecipes()
-            if (!expected.isInstance(recipe)) {
+            if (expected != null && !expected.isInstance(recipe)) {
+                continue;
+            }
+            if (type != null && recipe.m_6671_() != type) {            // Recipe.getType
                 continue;
             }
             try {
                 ItemStack out = recipe.m_8043_(level.m_9598_());       // getResultItem(registryAccess)
-                if (out != null && out.m_41720_() == result.m_41720_()) {   // ItemStack.getItem
+                if (out != null && out.m_41720_() == item) {           // ItemStack.getItem
                     candidates.add(recipe);
                 }
             } catch (Throwable ignored) {

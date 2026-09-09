@@ -20,20 +20,34 @@ already handles CJK — that is why vanilla books and tooltips are fine.
 
 **Recipe pages pointing at recipes the pack changed.** A page that asks for
 recipe id `examplemod:widget` fails when the pack removed that recipe and added
-its own replacement under a different id, and the book prints an untranslated
-error string over the page. This mod falls back to whatever recipe currently
-produces the item, so the page shows the recipe the player can actually craft.
-When the pack removed the recipe outright and there is no replacement, the page
-says so in the player's language instead of printing an id.
+its own replacement under a different id. Depending on the book that shows up as
+an untranslated error string over the page, or as a silently blank recipe slot.
+This mod falls back to whatever recipe currently produces the item, so the page
+shows the recipe the player can actually craft.
+
+Books that only carry a recipe id, with no item beside it, would otherwise be
+unfixable. Mods overwhelmingly name a recipe after what it makes
+(`eidolon:worktable`, `botania:diluted_pool`), so when the id also names an item
+the intent is recoverable. Ids that are not item ids
+(`ae2:transform/fluix_crystals`) get no fallback, which is the honest answer
+rather than a guess.
+
+When the pack removed the recipe outright and left no replacement, the page says
+so in the player's language instead of printing an id.
 
 Nothing is added to or removed from the recipe registry. The mod only changes
 what the book looks up and what it draws.
 
 ## Supported books
 
-| Mod | Line breaking | Recipe fallback |
-|---|---|---|
-| Eidolon: Repraised | ✅ | ✅ |
+| Mod | Line breaking | Recipe fallback | Message in the player's language |
+|---|---|---|---|
+| Eidolon: Repraised | ✅ | ✅ by result item | ✅ |
+| Patchouli | — | ✅ by recipe id | — (renders blank, no message to translate) |
+| GuideME (the AE2 guide) | — | ✅ by recipe id | ✅ |
+
+Line breaking is only listed for books that roll their own; Patchouli and
+GuideME already use Minecraft's line breaker and are fine as they are.
 
 Each fix is a Mixin in a package named after the mod it patches, and is skipped
 entirely when that mod is not installed. Adding a book means adding a package.

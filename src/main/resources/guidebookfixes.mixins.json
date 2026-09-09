@@ -7,7 +7,9 @@
   "refmap": "guidebookfixes.refmap.json",
   "client": [
     "eidolon.PageMixin",
-    "eidolon.RecipePageMixin"
+    "eidolon.RecipePageMixin",
+    "guideme.RecipeCompilerMixin",
+    "patchouli.PageDoubleRecipeRegistryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,3 +1,6 @@
 {
-  "guidebookfixes.recipe_removed": "This recipe was removed by the modpack."
+  "guidebookfixes.recipe_removed": "This recipe was removed by the modpack.",
+  "guidebookfixes.recipe_removed.id": "This recipe was removed by the modpack (%s).",
+  "guidebookfixes.guide.not_in_game": "Recipes can only be shown in-game.",
+  "guidebookfixes.guide.no_renderer": "This guide cannot display that kind of recipe (%s)."
 }

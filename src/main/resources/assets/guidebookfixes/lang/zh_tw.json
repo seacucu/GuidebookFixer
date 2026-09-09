@@ -1,3 +1,6 @@
 {
-  "guidebookfixes.recipe_removed": "本模組包已移除此配方。"
+  "guidebookfixes.recipe_removed": "本模組包已移除此配方。",
+  "guidebookfixes.recipe_removed.id": "本模組包已移除此配方（%s）。",
+  "guidebookfixes.guide.not_in_game": "進入遊戲後才能顯示配方。",
+  "guidebookfixes.guide.no_renderer": "本手冊無法顯示這種配方（%s）。"
 }
