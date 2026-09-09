@@ -75,9 +75,17 @@ public abstract class RecipePageMixin {
     }
 
     /**
+     * A muted brick red, against the dark brown Eidolon draws its own body text
+     * in. This line is not part of the book: it is this mod talking about the
+     * modpack, and a reader should be able to tell that at a glance.
+     */
+    @Unique
+    private static final int guidebookfixes$NOTE_COLOUR = 0xFF8C2F26;
+
+    /**
      * Only reached when the fallback found nothing either, i.e. the modpack
-     * removed the recipe and put nothing in its place. Drawn at the position
-     * and in the colour Eidolon used, wrapped to the page.
+     * removed the recipe and put nothing in its place. Drawn where Eidolon put
+     * its error, wrapped to the page.
      */
     @Redirect(method = "fullRender",
             at = @At(value = "INVOKE",
@@ -91,7 +99,8 @@ public abstract class RecipePageMixin {
         for (int i = 0; i < lines.size(); i++) {
             // GuiGraphics.drawString
             width = Math.max(width, graphics.m_280488_(font, lines.get(i), x,
-                    y + i * (font.f_92710_ + 1), colour));               // font.lineHeight
+                    y + i * (font.f_92710_ + 1),                          // font.lineHeight
+                    guidebookfixes$NOTE_COLOUR));
         }
         return width;
     }
