@@ -1,0 +1,14 @@
+{
+  "required": false,
+  "minVersion": "0.8.5",
+  "package": "io.github.seacucu.guidebookfixes.mixin",
+  "plugin": "io.github.seacucu.guidebookfixes.mixin.MixinPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "guidebookfixes.refmap.json",
+  "client": [
+    "eidolon.PageMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

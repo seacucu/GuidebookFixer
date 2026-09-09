@@ -1,0 +1,45 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/seacucu/GuidebookFixes/issues"
+
+[[mods]]
+modId = "guidebookfixes"
+version = "${file.jarVersion}"
+displayName = "Guidebook Fixes"
+authors = "seacucu"
+# Purely cosmetic, client-side, and safe to have on only one side of a connection.
+displayTest = "IGNORE_ALL_VERSIONS"
+description = '''
+Repairs in-game guidebooks that break inside modpacks.
+
+- Line breaking for Chinese, Japanese and Korean in books that wrap text by
+  splitting on spaces, which leaves CJK paragraphs running off the page.
+- Recipe pages that reference a recipe id the modpack removed or replaced:
+  the page falls back to whatever recipe currently produces the item, and says
+  so plainly when the modpack removed it outright, instead of printing an
+  untranslated error string.
+
+Every fix only activates when the mod that owns the book is installed.
+'''
+
+[[dependencies.guidebookfixes]]
+    modId = "forge"
+    mandatory = true
+    versionRange = "[47,)"
+    ordering = "NONE"
+    side = "CLIENT"
+
+[[dependencies.guidebookfixes]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[1.20.1,1.21)"
+    ordering = "NONE"
+    side = "CLIENT"
+
+[[dependencies.guidebookfixes]]
+    modId = "eidolon"
+    mandatory = false
+    versionRange = "[0.3,)"
+    ordering = "AFTER"
+    side = "CLIENT"
