@@ -1,6 +1,7 @@
 package io.github.seacucu.guidebookfixes.guideme;
 
 import guideme.document.block.LytBlock;
+import io.github.seacucu.guidebookfixes.PackAuthored;
 import guideme.document.block.LytSlotGrid;
 import guideme.document.block.recipes.LytStandardRecipeBox;
 import net.minecraft.client.Minecraft;
@@ -106,6 +107,7 @@ public final class GenericRecipeBoxes {
             return null;
         }
         return LytStandardRecipeBox.builder()
+                .icon(FixMark.icon(PackAuthored.test(recipe.m_6423_())))   // getId
                 .title(title(recipe.m_6671_()))                  // getType
                 .input(LytSlotGrid.row(inputs, false))
                 .output(result)

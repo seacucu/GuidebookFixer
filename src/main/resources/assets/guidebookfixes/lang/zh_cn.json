@@ -3,6 +3,8 @@
   "guidebookfixes.recipe_removed.id": "本整合包没有留下制作方式（%s）。",
   "guidebookfixes.guide.not_in_game": "进入游戏后才能显示配方。",
   "guidebookfixes.guide.no_renderer": "本手册无法显示这种配方（%s）。",
-  "guidebookfixes.guide.not_drawable": "本手册画不出这条配方（%s），请用 JEI 之类的配方查看器查询。",
-  "guidebookfixes.guide.recipe_missing": "本整合包已无配方 %s。"
+  "guidebookfixes.guide.recipe_missing": "本整合包已无配方 %s。",
+  "guidebookfixes.mark.title": "由 Guidebook Fixes 补绘",
+  "guidebookfixes.mark.simplified": "此图为简化显示，未标出概率、耗时等各机器的细节。",
+  "guidebookfixes.mark.pack_changed": "此配方来自整合包，不是本手册所属模组提供的。周围的说明可能描述的是旧配方。请勿向该模组作者报告。"
 }
