@@ -32,19 +32,33 @@ the intent is recoverable. Ids that are not item ids
 (`ae2:transform/fluix_crystals`) get no fallback, which is the honest answer
 rather than a guess.
 
-When the pack removed the recipe outright and left no replacement, the page says
-so in the player's language instead of printing an id.
+**Recipes of a kind the book has no renderer for.** GuideME draws crafting,
+smelting, smithing and cooking. An item a modpack moved to a Create crusher or
+a Thermal pulverizer is perfectly craftable and still reported missing, because
+nothing registered a way to draw that kind of recipe. A recipe knows its own
+ingredients and result, and GuideME's own recipe box takes exactly those, so
+this mod draws it rather than explaining why it cannot. Where a mod contributes
+a proper renderer that one still wins; this only runs where the alternative was
+nothing at all.
+
+When the pack really did remove the recipe and left no replacement, the page
+says so in the player's language instead of printing an id.
 
 Nothing is added to or removed from the recipe registry. The mod only changes
 what the book looks up and what it draws.
 
 ## Supported books
 
-| Mod | Line breaking | Recipe fallback | Message in the player's language |
-|---|---|---|---|
-| Eidolon: Repraised | ✅ | ✅ by result item | ✅ |
-| Patchouli | — | ✅ by recipe id | — (renders blank, no message to translate) |
-| GuideME (the AE2 guide) | — | ✅ by recipe id | ✅ |
+| Mod | Line breaking | Recipe fallback | Draws unsupported recipe kinds | Message in the player's language |
+|---|---|---|---|---|
+| Eidolon: Repraised | ✅ | ✅ by result item | — | ✅ |
+| Patchouli | — | ✅ by recipe id | — | — (renders blank, nothing to translate) |
+| GuideME (the AE2 guide) | — | ✅ by recipe id | ✅ | ✅ |
+
+Only GuideME gets the generic recipe drawing: it has a recipe box that takes
+any ingredients and result. Patchouli and Eidolon pages are written as one
+specific kind of recipe each and would break if handed another, so there the
+fallback stays within the kind the page was written for.
 
 Line breaking is only listed for books that roll their own; Patchouli and
 GuideME already use Minecraft's line breaker and are fine as they are.

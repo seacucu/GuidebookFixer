@@ -3,11 +3,14 @@ package io.github.seacucu.guidebookfixes.mixin.guideme;
 import guideme.compiler.PageCompiler;
 import guideme.color.SymbolicColor;
 import guideme.compiler.tags.RecipeCompiler;
+import guideme.document.block.LytBlock;
 import guideme.document.block.LytBlockContainer;
 import guideme.document.block.LytParagraph;
 import guideme.document.flow.LytFlowSpan;
 import guideme.libs.unist.UnistNode;
 import io.github.seacucu.guidebookfixes.RecipeFallback;
+import io.github.seacucu.guidebookfixes.guideme.GenericRecipeBoxes;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
@@ -63,6 +66,10 @@ public abstract class RecipeCompilerMixin {
                             + "Lguideme/libs/unist/UnistNode;)V"))
     private void guidebookfixes$sayItInTheirLanguage(LytBlockContainer parent, PageCompiler compiler,
                                                      String message, UnistNode node) {
+        // Drawing the recipe beats explaining why it cannot be drawn.
+        if (guidebookfixes$drawInstead(parent, message)) {
+            return;
+        }
         String translated = guidebookfixes$translate(message);
         if (translated.equals(message)) {
             // Not one of ours: a genuine authoring error, where GuideME's line
@@ -79,6 +86,48 @@ public abstract class RecipeCompilerMixin {
         LytParagraph paragraph = new LytParagraph();
         paragraph.append(span);
         parent.append(paragraph);
+    }
+
+    /**
+     * GuideME gives up when none of its registered renderers matches the recipe
+     * kind, but a recipe still knows its own ingredients and result, which is
+     * all a generic box needs. So before saying anything, try to just draw it.
+     *
+     * @return true if something was drawn and no message is needed
+     */
+    private static boolean guidebookfixes$drawInstead(LytBlockContainer parent, String message) {
+        List<LytBlock> boxes = List.of();
+        if (message.startsWith("Couldn't find recipe for ")) {
+            boxes = GenericRecipeBoxes.forItem(message.substring("Couldn't find recipe for ".length()));
+        } else if (message.startsWith("Couldn't find a handler for recipe ")) {
+            // GuideME found the recipe, it just had no renderer for its kind.
+            String id = message.substring("Couldn't find a handler for recipe ".length());
+            LytBlock box = GenericRecipeBoxes.forRecipe(guidebookfixes$recipe(id));
+            if (box != null) {
+                boxes = List.of(box);
+            }
+        }
+        for (LytBlock box : boxes) {
+            parent.append(box);
+        }
+        return !boxes.isEmpty();
+    }
+
+    /** The recipe GuideME was holding when it gave up, by the same two steps. */
+    private static Recipe<?> guidebookfixes$recipe(String id) {
+        ResourceLocation key;
+        try {
+            key = new ResourceLocation(id);
+        } catch (Exception e) {
+            return null;
+        }
+        Minecraft mc = Minecraft.m_91087_();                          // getInstance
+        if (mc == null || mc.f_91073_ == null) {                      // Minecraft.level
+            return null;
+        }
+        Recipe<?> found = mc.f_91073_.m_7465_().m_44043_(key)         // getRecipeManager().byKey
+                .map(r -> (Recipe<?>) r).orElse(null);
+        return found != null ? found : RecipeFallback.byRecipeId(key);
     }
 
     /**
