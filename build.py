@@ -120,6 +120,47 @@ def check_metadata():
     return problems
 
 
+# The jar tool stamps every entry with the current time, so two builds of the
+# same source produce different bytes. This mod ships inside the LIA-zhTW patch,
+# which promises a byte-identical zip for a given source tree, so we write the
+# archive ourselves with a fixed timestamp and a sorted entry order.
+JAR_TIME = (2026, 1, 1, 0, 0, 0)
+
+
+def write_jar(out_path, manifest):
+    def entry(name):
+        zi = zipfile.ZipInfo(name, date_time=JAR_TIME)
+        zi.compress_type = zipfile.ZIP_DEFLATED
+        zi.external_attr = 0o644 << 16
+        return zi
+
+    files, dirs = [], set()
+    for dp, _, fs in os.walk(CLASSES):
+        for f in fs:
+            full = os.path.join(dp, f)
+            name = os.path.relpath(full, CLASSES).replace(os.sep, "/")
+            files.append((name, full))
+            parts = name.split("/")[:-1]
+            for i in range(1, len(parts) + 1):
+                dirs.add("/".join(parts[:i]) + "/")
+    files.sort()
+
+    with zipfile.ZipFile(out_path, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr(entry("META-INF/MANIFEST.MF"), manifest)
+        # Directory entries are optional for the JVM, but the jar tool writes
+        # them and some pack/resource scanners walk them, so keep the archive
+        # shaped the way a normal jar is.
+        for d in sorted(dirs):
+            zi = zipfile.ZipInfo(d, date_time=JAR_TIME)
+            zi.external_attr = (0o755 << 16) | 0x10
+            z.writestr(zi, b"")
+        for name, full in files:
+            if name == "META-INF/MANIFEST.MF":
+                continue
+            with open(full, "rb") as fh:
+                z.writestr(entry(name), fh.read())
+
+
 def main():
     javac = os.path.join(JDK, "bin", "javac.exe" if os.name == "nt" else "javac")
     jar = os.path.join(JDK, "bin", "jar.exe" if os.name == "nt" else "jar")
@@ -156,28 +197,22 @@ def main():
     if problems:
         die("中繼資料檢查未過：\n  " + "\n  ".join(problems))
 
-    manifest = os.path.join(OUT, "MANIFEST.MF")
-    with open(manifest, "w", encoding="utf-8", newline="\r\n") as fh:
-        fh.write(
-            "Manifest-Version: 1.0\n"
-            "Specification-Title: guidebookfixes\n"
-            "Specification-Vendor: seacucu\n"
-            "Specification-Version: 1\n"
-            "Implementation-Title: Guidebook Fixes\n"
-            f"Implementation-Version: {VERSION}\n"
-            "Implementation-Vendor: seacucu\n"
-            "MixinConfigs: guidebookfixes.mixins.json\n"
-        )
+    # ${file.jarVersion} is substituted by Forge from the manifest at load time.
+    manifest = (
+        "Manifest-Version: 1.0\r\n"
+        "Specification-Title: guidebookfixes\r\n"
+        "Specification-Vendor: seacucu\r\n"
+        "Specification-Version: 1\r\n"
+        "Implementation-Title: Guidebook Fixes\r\n"
+        f"Implementation-Version: {VERSION}\r\n"
+        "Implementation-Vendor: seacucu\r\n"
+        "MixinConfigs: guidebookfixes.mixins.json\r\n"
+        "\r\n"
+    )
 
     out = os.path.join(LIBS, f"guidebookfixes-{MC}-{VERSION}.jar")
-    r = subprocess.run([jar, "--create", "--file", out, "--manifest", manifest,
-                        "-C", CLASSES, "."],
-                       capture_output=True, text=True, encoding="utf-8", errors="replace")
-    if r.returncode:
-        print(r.stdout + r.stderr, file=sys.stderr)
-        die("打包失敗")
+    write_jar(out, manifest)
 
-    # ${file.jarVersion} is substituted by Forge from the manifest at load time.
     with zipfile.ZipFile(out) as z:
         names = z.namelist()
     print(f"完成：{os.path.relpath(out, ROOT)}（{len(names)} 個項目，"
