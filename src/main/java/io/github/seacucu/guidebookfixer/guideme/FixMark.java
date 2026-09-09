@@ -1,4 +1,4 @@
-package io.github.seacucu.guidebookfixes.guideme;
+package io.github.seacucu.guidebookfixer.guideme;
 
 import guideme.document.block.LytBlock;
 import guideme.document.block.LytImage;
@@ -32,7 +32,7 @@ public final class FixMark {
     }
 
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation("guidebookfixes", "textures/gui/correction_tape.png");
+            new ResourceLocation("guidebookfixer", "textures/gui/correction_tape.png");
 
     private static byte[] texture;
     private static boolean textureLoaded;
@@ -45,10 +45,10 @@ public final class FixMark {
      */
     public static LytBlock icon(boolean packAuthored) {
         List<Component> lines = new ArrayList<>();
-        lines.add(Component.m_237115_("guidebookfixes.mark.title"));        // translatable
-        lines.add(Component.m_237115_("guidebookfixes.mark.simplified"));
+        lines.add(Component.m_237115_("guidebookfixer.mark.title"));        // translatable
+        lines.add(Component.m_237115_("guidebookfixer.mark.simplified"));
         if (packAuthored) {
-            lines.add(Component.m_237115_("guidebookfixes.mark.pack_changed"));
+            lines.add(Component.m_237115_("guidebookfixer.mark.pack_changed"));
         }
 
         LytTooltipSpan span = new LytTooltipSpan();

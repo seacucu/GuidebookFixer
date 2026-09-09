@@ -10,7 +10,7 @@ read and edited in a diff. Run this to regenerate both sizes:
 
     python art/icon.py
 
-    src/main/resources/assets/guidebookfixes/textures/gui/correction_tape.png
+    src/main/resources/assets/guidebookfixer/textures/gui/correction_tape.png
         16x16, drawn in the title bar of a recipe box this mod filled in
     src/main/resources/logo.png
         128x128, the mod list entry
@@ -51,7 +51,7 @@ PALETTE = {
 }
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ICON = os.path.join(ROOT, "src", "main", "resources", "assets", "guidebookfixes",
+ICON = os.path.join(ROOT, "src", "main", "resources", "assets", "guidebookfixer",
                     "textures", "gui", "correction_tape.png")
 LOGO = os.path.join(ROOT, "src", "main", "resources", "logo.png")
 

@@ -1,0 +1,10 @@
+{
+  "guidebookfixer.recipe_removed": "This recipe was removed by the modpack.",
+  "guidebookfixer.recipe_removed.id": "The modpack left no way to make this (%s).",
+  "guidebookfixer.guide.not_in_game": "Recipes can only be shown in-game.",
+  "guidebookfixer.guide.no_renderer": "This guide cannot display that kind of recipe (%s).",
+  "guidebookfixer.guide.recipe_missing": "Recipe %s no longer exists in this modpack.",
+  "guidebookfixer.mark.title": "Filled in by Guidebook Fixer",
+  "guidebookfixer.mark.simplified": "Simplified: chances, timings and other per-machine details are not shown.",
+  "guidebookfixer.mark.pack_changed": "This recipe comes from the modpack, not from the mod this book belongs to. The text around it may describe the old one. Don't report it to that mod's author."
+}

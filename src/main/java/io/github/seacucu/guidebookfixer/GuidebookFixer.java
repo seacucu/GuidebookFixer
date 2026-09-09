@@ -1,4 +1,4 @@
-package io.github.seacucu.guidebookfixes;
+package io.github.seacucu.guidebookfixer;
 
 import net.minecraftforge.fml.common.Mod;
 
@@ -7,13 +7,13 @@ import net.minecraftforge.fml.common.Mod;
  *
  * <p>The mod itself does nothing at runtime; every fix is a Mixin that only
  * applies when the book's owning mod is actually present. See {@link
- * io.github.seacucu.guidebookfixes.mixin.MixinPlugin}.
+ * io.github.seacucu.guidebookfixer.mixin.MixinPlugin}.
  */
-@Mod(GuidebookFixes.MODID)
-public final class GuidebookFixes {
-    public static final String MODID = "guidebookfixes";
+@Mod(GuidebookFixer.MODID)
+public final class GuidebookFixer {
+    public static final String MODID = "guidebookfixer";
 
-    public GuidebookFixes() {
+    public GuidebookFixer() {
         // Everything happens in Mixins; no registration needed.
     }
 }

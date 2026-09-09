@@ -1,4 +1,4 @@
-package io.github.seacucu.guidebookfixes.mixin.guideme;
+package io.github.seacucu.guidebookfixer.mixin.guideme;
 
 import guideme.compiler.PageCompiler;
 import guideme.color.SymbolicColor;
@@ -8,8 +8,8 @@ import guideme.document.block.LytBlockContainer;
 import guideme.document.block.LytParagraph;
 import guideme.document.flow.LytFlowSpan;
 import guideme.libs.unist.UnistNode;
-import io.github.seacucu.guidebookfixes.RecipeFallback;
-import io.github.seacucu.guidebookfixes.guideme.GenericRecipeBoxes;
+import io.github.seacucu.guidebookfixer.RecipeFallback;
+import io.github.seacucu.guidebookfixer.guideme.GenericRecipeBoxes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.ResourceLocation;
@@ -50,7 +50,7 @@ public abstract class RecipeCompilerMixin {
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/world/item/crafting/RecipeManager;m_44043_"
                             + "(Lnet/minecraft/resources/ResourceLocation;)Ljava/util/Optional;"))
-    private Optional guidebookfixes$orByResult(RecipeManager manager, ResourceLocation id) {
+    private Optional guidebookfixer$orByResult(RecipeManager manager, ResourceLocation id) {
         Optional<? extends Recipe<?>> found = manager.m_44043_(id);   // byKey
         if (found.isPresent()) {
             return found;
@@ -64,13 +64,13 @@ public abstract class RecipeCompilerMixin {
                     target = "Lguideme/document/block/LytBlockContainer;appendError"
                             + "(Lguideme/compiler/PageCompiler;Ljava/lang/String;"
                             + "Lguideme/libs/unist/UnistNode;)V"))
-    private void guidebookfixes$sayItInTheirLanguage(LytBlockContainer parent, PageCompiler compiler,
+    private void guidebookfixer$sayItInTheirLanguage(LytBlockContainer parent, PageCompiler compiler,
                                                      String message, UnistNode node) {
         // Drawing the recipe beats explaining why it cannot be drawn.
-        if (guidebookfixes$drawInstead(parent, message)) {
+        if (guidebookfixer$drawInstead(parent, message)) {
             return;
         }
-        String translated = guidebookfixes$translate(message);
+        String translated = guidebookfixer$translate(message);
         if (translated.equals(message)) {
             // Not one of ours: a genuine authoring error, where GuideME's line
             // number and source excerpt are exactly what the author needs.
@@ -95,14 +95,14 @@ public abstract class RecipeCompilerMixin {
      *
      * @return true if something was drawn and no message is needed
      */
-    private static boolean guidebookfixes$drawInstead(LytBlockContainer parent, String message) {
+    private static boolean guidebookfixer$drawInstead(LytBlockContainer parent, String message) {
         List<LytBlock> boxes = List.of();
         if (message.startsWith("Couldn't find recipe for ")) {
             boxes = GenericRecipeBoxes.forItem(message.substring("Couldn't find recipe for ".length()));
         } else if (message.startsWith("Couldn't find a handler for recipe ")) {
             // GuideME found the recipe, it just had no renderer for its kind.
             String id = message.substring("Couldn't find a handler for recipe ".length());
-            LytBlock box = GenericRecipeBoxes.forRecipe(guidebookfixes$recipe(id));
+            LytBlock box = GenericRecipeBoxes.forRecipe(guidebookfixer$recipe(id));
             if (box != null) {
                 boxes = List.of(box);
             }
@@ -114,7 +114,7 @@ public abstract class RecipeCompilerMixin {
     }
 
     /** The recipe GuideME was holding when it gave up, by the same two steps. */
-    private static Recipe<?> guidebookfixes$recipe(String id) {
+    private static Recipe<?> guidebookfixer$recipe(String id) {
         ResourceLocation key;
         try {
             key = new ResourceLocation(id);
@@ -135,19 +135,19 @@ public abstract class RecipeCompilerMixin {
      * English prefix is the only handle we have. If a GuideME update rewords
      * one, the message simply passes through untranslated rather than breaking.
      */
-    private static String guidebookfixes$translate(String message) {
+    private static String guidebookfixer$translate(String message) {
         if (message.equals("Cannot show recipe while not in-game")) {
-            return I18n.m_118938_("guidebookfixes.guide.not_in_game");
+            return I18n.m_118938_("guidebookfixer.guide.not_in_game");
         }
         if (message.startsWith("Couldn't find a handler for recipe ")) {
-            return I18n.m_118938_("guidebookfixes.guide.no_renderer",
+            return I18n.m_118938_("guidebookfixer.guide.no_renderer",
                     message.substring("Couldn't find a handler for recipe ".length()));
         }
         if (message.startsWith("Couldn't find recipe for ")) {
-            return guidebookfixes$aboutItem(message.substring("Couldn't find recipe for ".length()));
+            return guidebookfixer$aboutItem(message.substring("Couldn't find recipe for ".length()));
         }
         if (message.startsWith("Couldn't find recipe ")) {
-            return I18n.m_118938_("guidebookfixes.guide.recipe_missing",
+            return I18n.m_118938_("guidebookfixer.guide.recipe_missing",
                     message.substring("Couldn't find recipe ".length()));
         }
         return message;
@@ -160,7 +160,7 @@ public abstract class RecipeCompilerMixin {
      * say, a Create crusher is perfectly craftable and still reported missing.
      * Ask the recipe manager directly and tell the reader which case this is.
      */
-    private static String guidebookfixes$aboutItem(String itemId) {
+    private static String guidebookfixer$aboutItem(String itemId) {
         List<String> types;
         try {
             types = RecipeFallback.recipeTypesProducing(new ResourceLocation(itemId));
@@ -168,8 +168,8 @@ public abstract class RecipeCompilerMixin {
             types = List.of();
         }
         if (types.isEmpty()) {
-            return I18n.m_118938_("guidebookfixes.recipe_removed.id", itemId);
+            return I18n.m_118938_("guidebookfixer.recipe_removed.id", itemId);
         }
-        return I18n.m_118938_("guidebookfixes.guide.not_drawable", String.join(", ", types));
+        return I18n.m_118938_("guidebookfixer.guide.not_drawable", String.join(", ", types));
     }
 }

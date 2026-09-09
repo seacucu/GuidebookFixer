@@ -1,4 +1,4 @@
-package io.github.seacucu.guidebookfixes;
+package io.github.seacucu.guidebookfixer;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.FormattedText;

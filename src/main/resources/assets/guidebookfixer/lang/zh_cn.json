@@ -1,0 +1,10 @@
+{
+  "guidebookfixer.recipe_removed": "本整合包已移除此配方。",
+  "guidebookfixer.recipe_removed.id": "本整合包没有留下制作方式（%s）。",
+  "guidebookfixer.guide.not_in_game": "进入游戏后才能显示配方。",
+  "guidebookfixer.guide.no_renderer": "本手册无法显示这种配方（%s）。",
+  "guidebookfixer.guide.recipe_missing": "本整合包已无配方 %s。",
+  "guidebookfixer.mark.title": "由 Guidebook Fixer 补绘",
+  "guidebookfixer.mark.simplified": "此图为简化显示，未标出概率、耗时等各机器的细节。",
+  "guidebookfixer.mark.pack_changed": "此配方来自整合包，不是本手册所属模组提供的。周围的说明可能描述的是旧配方。请勿向该模组作者报告。"
+}

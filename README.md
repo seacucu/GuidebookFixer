@@ -1,4 +1,4 @@
-# Guidebook Fixes
+# Guidebook Fixer
 
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
@@ -83,7 +83,7 @@ Inputs are located from a PrismLauncher install by default. Override with
 `GBF_LIBRARIES` (launcher `libraries/`), `GBF_MODS` (a folder holding the mod
 jars to compile against) and `GBF_JDK` (a JDK 17).
 
-Output: `build/libs/guidebookfixes-1.20.1-<version>.jar`
+Output: `build/libs/guidebookfixer-1.20.1-<version>.jar`
 
 ## License
 

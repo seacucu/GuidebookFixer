@@ -1,7 +1,7 @@
-package io.github.seacucu.guidebookfixes.mixin.eidolon;
+package io.github.seacucu.guidebookfixer.mixin.eidolon;
 
 import elucent.eidolon.codex.Page;
-import io.github.seacucu.guidebookfixes.TextWrap;
+import io.github.seacucu.guidebookfixer.TextWrap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -26,7 +26,7 @@ import java.util.List;
 public class PageMixin {
 
     @Inject(method = "drawWrappingText", at = @At("HEAD"), cancellable = true)
-    private static void guidebookfixes$wrapForCjk(GuiGraphics graphics, String text,
+    private static void guidebookfixer$wrapForCjk(GuiGraphics graphics, String text,
                                                   int x, int y, int width, CallbackInfo ci) {
         Font font = Minecraft.m_91087_().f_91062_;          // Minecraft.getInstance().font
         List<String> lines = TextWrap.lines(font, text, width);

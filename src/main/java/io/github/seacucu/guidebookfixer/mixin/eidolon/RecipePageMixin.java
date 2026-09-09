@@ -1,8 +1,8 @@
-package io.github.seacucu.guidebookfixes.mixin.eidolon;
+package io.github.seacucu.guidebookfixer.mixin.eidolon;
 
 import elucent.eidolon.codex.RecipePage;
-import io.github.seacucu.guidebookfixes.RecipeFallback;
-import io.github.seacucu.guidebookfixes.TextWrap;
+import io.github.seacucu.guidebookfixer.RecipeFallback;
+import io.github.seacucu.guidebookfixer.TextWrap;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
@@ -48,7 +48,7 @@ public abstract class RecipePageMixin {
      * reloading datapacks searches again.
      */
     @Unique
-    private Object guidebookfixes$searchedIn;
+    private Object guidebookfixer$searchedIn;
 
     /**
      * The redirected instruction is the {@code getRecipe(recipeId)} call inside
@@ -61,16 +61,16 @@ public abstract class RecipePageMixin {
                     target = "Lelucent/eidolon/codex/RecipePage;getRecipe"
                             + "(Lnet/minecraft/resources/ResourceLocation;)"
                             + "Lnet/minecraft/world/item/crafting/Recipe;"))
-    private Recipe guidebookfixes$orByResult(RecipePage self, ResourceLocation id) {
+    private Recipe guidebookfixer$orByResult(RecipePage self, ResourceLocation id) {
         Recipe<?> found = self.getRecipe(id);
         if (found != null) {
             return found;
         }
         Object recipes = RecipeFallback.currentRecipeSet();
-        if (recipes != null && recipes == this.guidebookfixes$searchedIn) {
+        if (recipes != null && recipes == this.guidebookfixer$searchedIn) {
             return null;        // already searched this recipe set; nothing produces it
         }
-        this.guidebookfixes$searchedIn = recipes;
+        this.guidebookfixer$searchedIn = recipes;
         return RecipeFallback.find(self, this.result);
     }
 
@@ -80,7 +80,7 @@ public abstract class RecipePageMixin {
      * modpack, and a reader should be able to tell that at a glance.
      */
     @Unique
-    private static final int guidebookfixes$NOTE_COLOUR = 0xFF8C2F26;
+    private static final int guidebookfixer$NOTE_COLOUR = 0xFF8C2F26;
 
     /**
      * Only reached when the fallback found nothing either, i.e. the modpack
@@ -91,16 +91,16 @@ public abstract class RecipePageMixin {
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/client/gui/GuiGraphics;m_280488_"
                             + "(Lnet/minecraft/client/gui/Font;Ljava/lang/String;III)I"))
-    private int guidebookfixes$sayRemoved(GuiGraphics graphics, Font font, String ignored,
+    private int guidebookfixer$sayRemoved(GuiGraphics graphics, Font font, String ignored,
                                           int x, int y, int colour) {
-        String message = I18n.m_118938_("guidebookfixes.recipe_removed");   // I18n.get
+        String message = I18n.m_118938_("guidebookfixer.recipe_removed");   // I18n.get
         List<String> lines = TextWrap.lines(font, message, 108);
         int width = 0;
         for (int i = 0; i < lines.size(); i++) {
             // GuiGraphics.drawString
             width = Math.max(width, graphics.m_280488_(font, lines.get(i), x,
                     y + i * (font.f_92710_ + 1),                          // font.lineHeight
-                    guidebookfixes$NOTE_COLOUR));
+                    guidebookfixer$NOTE_COLOUR));
         }
         return width;
     }

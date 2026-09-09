@@ -1,0 +1,10 @@
+{
+  "guidebookfixer.recipe_removed": "本模組包已移除此配方。",
+  "guidebookfixer.recipe_removed.id": "本模組包沒有留下製作方式（%s）。",
+  "guidebookfixer.guide.not_in_game": "進入遊戲後才能顯示配方。",
+  "guidebookfixer.guide.no_renderer": "本手冊無法顯示這種配方（%s）。",
+  "guidebookfixer.guide.recipe_missing": "本模組包已無配方 %s。",
+  "guidebookfixer.mark.title": "由 Guidebook Fixer 補繪",
+  "guidebookfixer.mark.simplified": "此圖為簡化顯示，未標出機率、耗時等各機器的細節。",
+  "guidebookfixer.mark.pack_changed": "此配方來自模組包，不是本手冊所屬模組提供的。周圍的說明可能描述的是舊配方。請勿向該模組作者回報。"
+}

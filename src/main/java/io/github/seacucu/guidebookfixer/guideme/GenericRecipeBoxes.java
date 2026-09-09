@@ -1,7 +1,7 @@
-package io.github.seacucu.guidebookfixes.guideme;
+package io.github.seacucu.guidebookfixer.guideme;
 
 import guideme.document.block.LytBlock;
-import io.github.seacucu.guidebookfixes.PackAuthored;
+import io.github.seacucu.guidebookfixer.PackAuthored;
 import guideme.document.block.LytSlotGrid;
 import guideme.document.block.recipes.LytStandardRecipeBox;
 import net.minecraft.client.Minecraft;

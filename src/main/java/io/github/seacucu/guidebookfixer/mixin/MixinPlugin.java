@@ -1,4 +1,4 @@
-package io.github.seacucu.guidebookfixes.mixin;
+package io.github.seacucu.guidebookfixer.mixin;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,8 +18,8 @@ import java.util.Set;
  * never turn a missing optional dependency into a crash or an error log.
  */
 public class MixinPlugin implements IMixinConfigPlugin {
-    private static final Logger LOG = LogManager.getLogger("guidebookfixes");
-    private static final String PACKAGE = "io.github.seacucu.guidebookfixes.mixin.";
+    private static final Logger LOG = LogManager.getLogger("guidebookfixer");
+    private static final String PACKAGE = "io.github.seacucu.guidebookfixer.mixin.";
 
     @Override
     public void onLoad(String mixinPackage) {

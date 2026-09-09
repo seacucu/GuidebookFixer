@@ -1,12 +1,12 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
 license = "MIT"
-issueTrackerURL = "https://github.com/seacucu/GuidebookFixes/issues"
+issueTrackerURL = "https://github.com/seacucu/GuidebookFixer/issues"
 
 [[mods]]
-modId = "guidebookfixes"
+modId = "guidebookfixer"
 version = "${file.jarVersion}"
-displayName = "Guidebook Fixes"
+displayName = "Guidebook Fixer"
 authors = "seacucu"
 logoFile = "logo.png"
 # Purely cosmetic, client-side, and safe to have on only one side of a connection.
@@ -26,14 +26,14 @@ Repairs in-game guidebooks that break inside modpacks.
 Every fix only activates when the mod that owns the book is installed.
 '''
 
-[[dependencies.guidebookfixes]]
+[[dependencies.guidebookfixer]]
     modId = "forge"
     mandatory = true
     versionRange = "[47,)"
     ordering = "NONE"
     side = "CLIENT"
 
-[[dependencies.guidebookfixes]]
+[[dependencies.guidebookfixer]]
     modId = "minecraft"
     mandatory = true
     versionRange = "[1.20.1,1.21)"

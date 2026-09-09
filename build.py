@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build guidebookfixes-<version>.jar with plain javac — no Gradle, no downloads.
+"""Build guidebookfixer-<version>.jar with plain javac — no Gradle, no downloads.
 
 Why not ForgeGradle: this mod is a handful of Mixins that patch other mods.
 Compiling against the SRG-named Minecraft jar that the launcher already has on
@@ -13,7 +13,7 @@ instance; override with GBF_LIBRARIES / GBF_MODS if yours live elsewhere.
 
     python build.py
 
-Output: build/libs/guidebookfixes-<version>.jar
+Output: build/libs/guidebookfixer-<version>.jar
 """
 
 import glob
@@ -112,7 +112,7 @@ def check_metadata():
         problems.append(f'mods.toml 的 displayTest="{m.group(1)}" 不是合法值，'
                         f'只能是 {"／".join(sorted(DISPLAY_TEST))}')
 
-    cfg_name = "guidebookfixes.mixins.json"
+    cfg_name = "guidebookfixer.mixins.json"
     cfg = json.load(open(os.path.join(RES, cfg_name), encoding="utf-8"))
     pkg = cfg["package"]
     for section in ("mixins", "client", "server"):
@@ -209,17 +209,17 @@ def main():
     # ${file.jarVersion} is substituted by Forge from the manifest at load time.
     manifest = (
         "Manifest-Version: 1.0\r\n"
-        "Specification-Title: guidebookfixes\r\n"
+        "Specification-Title: guidebookfixer\r\n"
         "Specification-Vendor: seacucu\r\n"
         "Specification-Version: 1\r\n"
-        "Implementation-Title: Guidebook Fixes\r\n"
+        "Implementation-Title: Guidebook Fixer\r\n"
         f"Implementation-Version: {VERSION}\r\n"
         "Implementation-Vendor: seacucu\r\n"
-        "MixinConfigs: guidebookfixes.mixins.json\r\n"
+        "MixinConfigs: guidebookfixer.mixins.json\r\n"
         "\r\n"
     )
 
-    out = os.path.join(LIBS, f"guidebookfixes-{MC}-{VERSION}.jar")
+    out = os.path.join(LIBS, f"guidebookfixer-{MC}-{VERSION}.jar")
     write_jar(out, manifest)
 
     with zipfile.ZipFile(out) as z:

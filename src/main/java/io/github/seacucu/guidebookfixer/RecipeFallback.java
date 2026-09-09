@@ -1,4 +1,4 @@
-package io.github.seacucu.guidebookfixes;
+package io.github.seacucu.guidebookfixer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;

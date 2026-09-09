@@ -1,6 +1,6 @@
-package io.github.seacucu.guidebookfixes.mixin.patchouli;
+package io.github.seacucu.guidebookfixer.mixin.patchouli;
 
-import io.github.seacucu.guidebookfixes.RecipeFallback;
+import io.github.seacucu.guidebookfixer.RecipeFallback;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -44,7 +44,7 @@ public abstract class PageDoubleRecipeRegistryMixin {
                    + "Lnet/minecraft/resources/ResourceLocation;)"
                    + "Lnet/minecraft/world/item/crafting/Recipe;",
             at = @At("RETURN"), cancellable = true)
-    private void guidebookfixes$orByResult(Level level, BookContentsBuilder builder, BookEntry entry,
+    private void guidebookfixer$orByResult(Level level, BookContentsBuilder builder, BookEntry entry,
                                            ResourceLocation res, CallbackInfoReturnable<Recipe> cir) {
         if (cir.getReturnValue() != null || res == null || level == null) {
             return;
