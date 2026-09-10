@@ -26,7 +26,7 @@ import sys
 import zipfile
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 MC = "1.20.1"
 
 APPDATA = os.environ.get("APPDATA", "")

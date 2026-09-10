@@ -1,12 +1,16 @@
 package io.github.seacucu.guidebookfixer.mixin.eidolon;
 
+import elucent.eidolon.codex.CodexGui;
 import elucent.eidolon.codex.RecipePage;
+import io.github.seacucu.guidebookfixer.Mark;
+import io.github.seacucu.guidebookfixer.PackAuthored;
 import io.github.seacucu.guidebookfixer.RecipeFallback;
 import io.github.seacucu.guidebookfixer.TextWrap;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import org.spongepowered.asm.mixin.Final;
@@ -14,6 +18,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.List;
@@ -35,6 +41,13 @@ import java.util.List;
 @Mixin(value = RecipePage.class, remap = false)
 public abstract class RecipePageMixin {
 
+    /** Eidolon blits every codex page at this size. */
+    @Unique
+    private static final int PAGE_WIDTH = 128;
+
+    @Unique
+    private static final int PAGE_HEIGHT = 160;
+
     @Shadow
     @Final
     ItemStack result;
@@ -49,6 +62,16 @@ public abstract class RecipePageMixin {
      */
     @Unique
     private Object guidebookfixer$searchedIn;
+
+    /**
+     * Set when the recipe on this page is not the one the book asked for. The
+     * reader has no other way to tell, so the page gets the correction tape.
+     */
+    @Unique
+    private boolean guidebookfixer$substituted;
+
+    @Unique
+    private boolean guidebookfixer$packAuthored;
 
     /**
      * The redirected instruction is the {@code getRecipe(recipeId)} call inside
@@ -71,7 +94,26 @@ public abstract class RecipePageMixin {
             return null;        // already searched this recipe set; nothing produces it
         }
         this.guidebookfixer$searchedIn = recipes;
-        return RecipeFallback.find(self, this.result);
+        Recipe<?> alternative = RecipeFallback.find(self, this.result);
+        if (alternative != null) {
+            this.guidebookfixer$substituted = true;
+            this.guidebookfixer$packAuthored = PackAuthored.test(alternative.m_6423_());   // getId
+        }
+        return alternative;
+    }
+
+    /**
+     * Eidolon paints its own recipe box, so there is no layout slot to hand a
+     * badge to. Draw it over the page instead, in the corner, once everything
+     * else is down.
+     */
+    @Inject(method = "fullRender", at = @At("TAIL"))
+    private void guidebookfixer$markSubstitution(CodexGui gui, GuiGraphics graphics, int x, int y,
+                                                 int mouseX, int mouseY, CallbackInfo ci) {
+        if (this.guidebookfixer$substituted) {
+            Mark.render(graphics, x + PAGE_WIDTH - Mark.SIZE - 4, y + PAGE_HEIGHT - Mark.SIZE - 4,
+                    mouseX, mouseY, this.guidebookfixer$packAuthored);
+        }
     }
 
     /**

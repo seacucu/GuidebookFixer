@@ -1,5 +1,7 @@
 package io.github.seacucu.guidebookfixer.mixin.patchouli;
 
+import io.github.seacucu.guidebookfixer.Marked;
+import io.github.seacucu.guidebookfixer.PackAuthored;
 import io.github.seacucu.guidebookfixer.RecipeFallback;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
@@ -52,6 +54,8 @@ public abstract class PageDoubleRecipeRegistryMixin {
         Recipe<?> alternative = RecipeFallback.byRecipeId(res, this.recipeType);
         if (alternative != null) {
             cir.setReturnValue(alternative);
+            ((Marked) this).guidebookfixer$markSubstituted(
+                    PackAuthored.test(alternative.m_6423_()));                // getId
         }
     }
 }

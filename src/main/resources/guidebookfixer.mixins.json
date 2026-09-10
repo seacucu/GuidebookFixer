@@ -8,7 +8,9 @@
   "client": [
     "eidolon.PageMixin",
     "eidolon.RecipePageMixin",
+    "guideme.LytStandardRecipeBoxMixin",
     "guideme.RecipeCompilerMixin",
+    "patchouli.PageDoubleRecipeMixin",
     "patchouli.PageDoubleRecipeRegistryMixin"
   ],
   "injectors": {

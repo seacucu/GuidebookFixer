@@ -1,6 +1,7 @@
 package io.github.seacucu.guidebookfixer.guideme;
 
 import guideme.document.block.LytBlock;
+import io.github.seacucu.guidebookfixer.Marked;
 import io.github.seacucu.guidebookfixer.PackAuthored;
 import guideme.document.block.LytSlotGrid;
 import guideme.document.block.recipes.LytStandardRecipeBox;
@@ -106,12 +107,14 @@ public final class GenericRecipeBoxes {
         if (inputs.isEmpty() || result == null || result.m_41619_()) {   // isEmpty
             return null;
         }
-        return LytStandardRecipeBox.builder()
-                .icon(FixMark.icon(PackAuthored.test(recipe.m_6423_())))   // getId
+        LytStandardRecipeBox<?> box = LytStandardRecipeBox.builder()
                 .title(title(recipe.m_6671_()))                  // getType
                 .input(LytSlotGrid.row(inputs, false))
                 .output(result)
                 .build(recipe);
+        // Drawn by us, so it always carries the tape.
+        ((Marked) box).guidebookfixer$markSubstituted(PackAuthored.test(recipe.m_6423_()));  // getId
+        return box;
     }
 
     private static Level level() {

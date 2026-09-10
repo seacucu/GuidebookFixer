@@ -42,18 +42,32 @@ a proper renderer that one still wins; this only runs where the alternative was
 nothing at all.
 
 When the pack really did remove the recipe and left no replacement, the page
-says so in the player's language instead of printing an id.
+says so in the player's language instead of printing an id or, in Patchouli's
+case, instead of leaving a hole a reader cannot tell from a page that never had
+a recipe.
+
+**A mark on anything it changed.** A recipe this mod filled in or swapped out
+carries a correction tape in the corner. Hovering it names this mod, notes that
+the box may be simplified, and, when the recipe came from the modpack rather
+than from the mod that owns the book, warns that the surrounding text may
+describe the old recipe and asks the reader not to report it to that mod's
+author. The mod cannot rewrite prose, so the reader is told to judge it.
+
+Books share no rendering model, so there is no one way to attach that badge:
+the mark is common, the attachment is per book. A book with a layout engine
+gets it as part of the recipe box, so it scrolls and clips correctly; a book
+that paints a fixed page gets it drawn over the corner.
 
 Nothing is added to or removed from the recipe registry. The mod only changes
 what the book looks up and what it draws.
 
 ## Supported books
 
-| Mod | Line breaking | Recipe fallback | Draws unsupported recipe kinds | Message in the player's language |
-|---|---|---|---|---|
-| Eidolon: Repraised | yes | by result item | n/a | yes |
-| Patchouli | n/a | by recipe id | n/a | n/a, it renders blank with nothing to translate |
-| GuideME (the AE2 guide) | n/a | by recipe id | yes | yes |
+| Mod | Line breaking | Recipe fallback | Marks what it changed | Draws unsupported recipe kinds | Says so when the recipe is gone |
+|---|---|---|---|---|---|
+| Eidolon: Repraised | yes | by result item | page corner | n/a | yes |
+| Patchouli | n/a | by recipe id | page corner | n/a | yes |
+| GuideME (the AE2 guide) | n/a | by recipe id | in the recipe box | yes | yes |
 
 Only GuideME gets the generic recipe drawing: it has a recipe box that takes
 any ingredients and result. Patchouli and Eidolon pages are written as one

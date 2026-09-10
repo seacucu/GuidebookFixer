@@ -8,6 +8,8 @@ import guideme.document.block.LytBlockContainer;
 import guideme.document.block.LytParagraph;
 import guideme.document.flow.LytFlowSpan;
 import guideme.libs.unist.UnistNode;
+import io.github.seacucu.guidebookfixer.Marked;
+import io.github.seacucu.guidebookfixer.PackAuthored;
 import io.github.seacucu.guidebookfixer.RecipeFallback;
 import io.github.seacucu.guidebookfixer.guideme.GenericRecipeBoxes;
 import net.minecraft.client.Minecraft;
@@ -16,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -45,6 +48,24 @@ import java.util.Optional;
 @Mixin(value = RecipeCompiler.class, remap = false)
 public abstract class RecipeCompilerMixin {
 
+    @Unique
+    private boolean guidebookfixer$pending;
+
+    @Unique
+    private boolean guidebookfixer$pendingPackAuthored;
+
+    @Redirect(method = "compile",
+            at = @At(value = "INVOKE",
+                    target = "Lguideme/document/block/LytBlockContainer;append"
+                            + "(Lguideme/document/block/LytBlock;)V"))
+    private void guidebookfixer$markAppended(LytBlockContainer parent, LytBlock block) {
+        if (this.guidebookfixer$pending && block instanceof Marked marked) {
+            marked.guidebookfixer$markSubstituted(this.guidebookfixer$pendingPackAuthored);
+        }
+        this.guidebookfixer$pending = false;
+        parent.append(block);
+    }
+
     @SuppressWarnings("rawtypes")
     @Redirect(method = "compile",
             at = @At(value = "INVOKE",
@@ -56,7 +77,14 @@ public abstract class RecipeCompilerMixin {
             return found;
         }
         Recipe<?> alternative = RecipeFallback.byRecipeId(id);
-        return alternative == null ? found : Optional.of(alternative);
+        if (alternative == null) {
+            return found;
+        }
+        // GuideME builds the box itself from here, so remember to mark whatever
+        // it appends next.
+        this.guidebookfixer$pending = true;
+        this.guidebookfixer$pendingPackAuthored = PackAuthored.test(alternative.m_6423_());  // getId
+        return Optional.of(alternative);
     }
 
     @Redirect(method = "compile",
