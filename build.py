@@ -61,6 +61,7 @@ NEEDED = [
     # Component drags in brigadier's Message, ModList drags in forgespi.
     "com/mojang/brigadier/1.1.*/brigadier-*.jar",
     "net/minecraftforge/forgespi/*/forgespi-*.jar",
+    "com/google/code/gson/gson/*/gson-*.jar",
 ]
 # Mods whose classes our Mixins reference. Optional: a missing one only means
 # the Mixins for that mod cannot be compiled, which we report rather than hide.

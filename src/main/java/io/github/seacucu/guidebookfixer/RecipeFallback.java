@@ -97,10 +97,7 @@ public final class RecipeFallback {
      * honest answer rather than a guess.
      */
     public static Recipe<?> byRecipeId(ResourceLocation id) {
-        if (id == null || !BuiltInRegistries.f_257033_.m_7804_(id)) {  // ITEM.containsKey
-            return null;
-        }
-        return producing(BuiltInRegistries.f_257033_.m_7745_(id), null, null);   // ITEM.get
+        return byRecipeId(id, null, null);
     }
 
     /**
@@ -109,12 +106,27 @@ public final class RecipeFallback {
      * could make from the page class.
      */
     public static Recipe<?> byRecipeId(ResourceLocation id, RecipeType<?> type) {
-        if (id == null || !BuiltInRegistries.f_257033_.m_7804_(id)) {  // ITEM.containsKey
+        return byRecipeId(id, null, type);
+    }
+
+    private static Recipe<?> byRecipeId(ResourceLocation id, Class<?> expected, RecipeType<?> type) {
+        Item item = intended(id);
+        return item == null ? null : producing(item, expected, type);
+    }
+
+    /**
+     * The item a recipe id was about. Most mods name a recipe after what it
+     * makes, so the id itself usually says. When it does not, the mod that
+     * shipped the recipe still has the original json in its jar, and that says.
+     */
+    private static Item intended(ResourceLocation id) {
+        if (id == null) {
             return null;
         }
-        Item item = BuiltInRegistries.f_257033_.m_7745_(id);           // ITEM.get
-        Recipe<?> found = producing(item, null, type);
-        return found;
+        if (BuiltInRegistries.f_257033_.m_7804_(id)) {                 // ITEM.containsKey
+            return BuiltInRegistries.f_257033_.m_7745_(id);            // ITEM.get
+        }
+        return IntendedResult.of(id);
     }
 
     /**

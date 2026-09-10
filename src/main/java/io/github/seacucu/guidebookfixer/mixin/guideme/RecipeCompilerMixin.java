@@ -54,6 +54,7 @@ public abstract class RecipeCompilerMixin {
     @Unique
     private boolean guidebookfixer$pendingPackAuthored;
 
+
     @Redirect(method = "compile",
             at = @At(value = "INVOKE",
                     target = "Lguideme/document/block/LytBlockContainer;append"
